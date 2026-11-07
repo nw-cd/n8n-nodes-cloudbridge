@@ -19,6 +19,6 @@
     "rootDir": ".",
     "sourceMap": false
   },
-  "include": ["credentials/**/*", "nodes/**/*"],
+  "include": ["credentials/**/*", "nodes/**/*", "package.json"],
   "exclude": ["node_modules", "dist", "gulpfile.js"]
 }
