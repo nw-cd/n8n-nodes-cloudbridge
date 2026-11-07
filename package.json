@@ -1,0 +1,59 @@
+{
+  "name": "n8n-nodes-cloudbridge",
+  "version": "0.1.0",
+  "description": "n8n community node for CloudBridge — transfer and sync files between 19 cloud storages",
+  "keywords": [
+    "n8n-community-node-package",
+    "cloudbridge",
+    "cloud storage",
+    "file transfer",
+    "yandex disk",
+    "google drive",
+    "vk cloud",
+    "telegram"
+  ],
+  "license": "MIT",
+  "homepage": "https://cloud-bridge.ru",
+  "author": {
+    "name": "CloudBridge",
+    "email": "support@cloud-bridge.ru"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nw-cd/n8n-nodes-cloudbridge"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/CloudBridgeApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/CloudBridge/CloudBridge.node.js"
+    ]
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "lint": "eslint nodes credentials package.json",
+    "format": "prettier nodes credentials --write",
+    "prepublishOnly": "npm run build && npm run lint -s"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "^1.48.0",
+    "prettier": "^3.3.0",
+    "typescript": "^5.5.0"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
