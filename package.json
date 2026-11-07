@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-cloudbridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n community node for CloudBridge — transfer and sync files between 19 cloud storages",
   "keywords": [
     "n8n-community-node-package",
@@ -42,7 +42,8 @@
     "dev": "tsc --watch",
     "lint": "eslint nodes credentials package.json",
     "format": "prettier nodes credentials --write",
-    "prepublishOnly": "npm run build && npm run lint -s"
+    "prepublishOnly": "npm run build && npm run lint -s",
+    "test": "npm run lint && npm run build"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "^8.0.0",
