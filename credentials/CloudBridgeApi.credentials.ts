@@ -3,12 +3,15 @@ import type {
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
+	Icon,
 } from 'n8n-workflow';
 
 export class CloudBridgeApi implements ICredentialType {
 	name = 'cloudBridgeApi';
 
 	displayName = 'CloudBridge API';
+
+	icon: Icon = 'file:cloudbridge.svg';
 
 	documentationUrl = 'https://cloud-bridge.ru/mcp';
 

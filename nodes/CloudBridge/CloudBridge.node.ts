@@ -1,3 +1,4 @@
+import { NodeConnectionTypes } from 'n8n-workflow';
 import type {
 	INodeProperties,
 	INodeType,
@@ -12,16 +13,17 @@ export class CloudBridge implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'CloudBridge',
 		name: 'cloudBridge',
-		icon: 'file:cloudbridge.svg',
+		icon: { light: 'file:cloudbridge.svg', dark: 'file:cloudbridge.svg' },
 		group: ['transform'],
 		version: 1,
+		usableAsTool: true,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
 			'Transfer and sync files between 19 cloud storages — Yandex Disk, ' +
 			'Google Drive, VK Cloud, Dropbox, OneDrive, Telegram, S3, WebDAV, FTP',
 		defaults: { name: 'CloudBridge' },
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'cloudBridgeApi', required: true }],
 		requestDefaults: {
 			baseURL: 'https://cloud-bridge.ru',
@@ -60,7 +62,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List connected clouds',
+						action: 'Get many clouds',
 						description: 'Connected storage accounts: ID, provider, quota',
 						routing: {
 							request: { method: 'GET', url: '/api/v1/connections' },
@@ -81,7 +83,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List files in a folder',
+						action: 'Get many files',
 						description: 'Direct children of a folder in a cloud',
 						routing: {
 							request: {
@@ -172,7 +174,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List transfers',
+						action: 'Get many transfers',
 						routing: {
 							request: {
 								method: 'GET',
@@ -338,7 +340,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List remote uploads',
+						action: 'Get many remote uploads',
 						routing: {
 							request: { method: 'GET', url: '/api/v1/remote' },
 						},
@@ -435,7 +437,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List share links',
+						action: 'Get many share links',
 						routing: {
 							request: { method: 'GET', url: '/api/v1/share-links' },
 						},
@@ -611,7 +613,7 @@ export class CloudBridge implements INodeType {
 					{
 						name: 'Get Many',
 						value: 'getAll',
-						action: 'List syncs',
+						action: 'Get many syncs',
 						routing: {
 							request: { method: 'GET', url: '/api/v1/syncs' },
 						},
