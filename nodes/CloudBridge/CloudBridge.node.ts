@@ -91,8 +91,8 @@ export class CloudBridge implements INodeType {
 								url: '/api/v1/files',
 								qs: {
 									connection_id: '={{$parameter.connectionId}}',
-									path: '={{$parameter.path || ""}}',
-									key: '={{$parameter.key || undefined}}',
+									path: '={{$parameter.filters.path || ""}}',
+									key: '={{$parameter.filters.key || undefined}}',
 								},
 							},
 						},
@@ -110,22 +110,30 @@ export class CloudBridge implements INodeType {
 				displayOptions: { show: { resource: ['file'], operation: ['getAll'] } },
 			},
 			{
-				displayName: 'Path',
-				name: 'path',
-				type: 'string',
-				default: '',
-				description: 'Relative folder path — empty = cloud root',
+				displayName: 'Filters',
+				name: 'filters',
+				type: 'collection',
+				placeholder: 'Add Filter',
+				default: {},
 				displayOptions: { show: { resource: ['file'], operation: ['getAll'] } },
-			},
-			{
-				displayName: 'Folder Key',
-				name: 'key',
-				type: 'string',
-				default: '',
-				description:
-					'Provider folder id — needed for key-based clouds (Google ' +
-					'Drive, OneDrive); take `key` from a previous File → Get Many',
-				displayOptions: { show: { resource: ['file'], operation: ['getAll'] } },
+				options: [
+					{
+						displayName: 'Folder Key',
+						name: 'key',
+						type: 'string',
+						default: '',
+						description:
+							'Provider folder id — needed for key-based clouds (Google ' +
+							'Drive, OneDrive); take `key` from a previous File → Get Many',
+					},
+					{
+						displayName: 'Path',
+						name: 'path',
+						type: 'string',
+						default: '',
+						description: 'Relative folder path — empty = cloud root',
+					},
+				],
 			},
 
 			// ---------------------------------------------- transfer ----
@@ -180,8 +188,24 @@ export class CloudBridge implements INodeType {
 								method: 'GET',
 								url: '/api/v1/transfers',
 								qs: {
-									limit: '={{$parameter.limit || 20}}',
-									offset: '={{$parameter.offset || 0}}',
+									limit:
+										'={{$parameter.returnAll ? 100 : ($parameter.limit || 20)}}',
+								},
+							},
+							operations: {
+								pagination: {
+									type: 'generic',
+									properties: {
+										continue:
+											'={{$parameter.returnAll === true && ' +
+											'Array.isArray($response.body) && ' +
+											'$response.body.length === 100}}',
+										request: {
+											qs: {
+												offset: '={{$page * 100}}',
+											},
+										},
+									},
 								},
 							},
 						},
@@ -273,6 +297,16 @@ export class CloudBridge implements INodeType {
 				],
 			},
 			{
+				displayName: 'Return All',
+				name: 'returnAll',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to return all results or only up to a given limit',
+				displayOptions: {
+					show: { resource: ['transfer'], operation: ['getAll'] },
+				},
+			},
+			{
 				displayName: 'Limit',
 				name: 'limit',
 				type: 'number',
@@ -280,16 +314,11 @@ export class CloudBridge implements INodeType {
 				typeOptions: { minValue: 1 },
 				default: 50,
 				displayOptions: {
-					show: { resource: ['transfer'], operation: ['getAll'] },
-				},
-			},
-			{
-				displayName: 'Offset',
-				name: 'offset',
-				type: 'number',
-				default: 0,
-				displayOptions: {
-					show: { resource: ['transfer'], operation: ['getAll'] },
+					show: {
+						resource: ['transfer'],
+						operation: ['getAll'],
+						returnAll: [false],
+					},
 				},
 			},
 
